@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
 				}
 			}
 		});
-		mAdapter.setIsShowFootView(true);//如果有多重布局时，必须设置，否则不显示
+		mAdapter.setIsAlwaysShowFootView(true);//如果有多重布局时，必须设置，否则不显示
 		mAdapter.setIsMoreType(true);
 		//设置数据
 		mAdapter.setListData(list);

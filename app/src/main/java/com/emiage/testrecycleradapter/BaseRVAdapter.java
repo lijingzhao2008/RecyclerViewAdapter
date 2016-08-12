@@ -2,7 +2,6 @@ package com.emiage.testrecycleradapter;
 
 import android.content.Context;
 import android.os.Handler;
-import android.os.HandlerThread;
 import android.os.Message;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -31,7 +30,7 @@ public abstract class BaseRVAdapter<T> extends RecyclerView.Adapter {
 	//是否加载更多，默认为false不加载
 	private boolean isLoadMore = false;
 	//显示footview的标志位
-	private boolean isShowFootView = false;
+	private boolean isAlwaysShowFootView = false;
 	//footview的布局
 	private View footView;
 	//是否多种布局的标志位
@@ -76,8 +75,8 @@ public abstract class BaseRVAdapter<T> extends RecyclerView.Adapter {
 	 * 显示footview，默认跟随loadmore，当loadmore为true是显示footview否则不显示
 	 * 当设为true时，都会显示一个footview
 	 */
-	public void setIsShowFootView(boolean isShowFootView) {
-		this.isShowFootView = isShowFootView;
+	public void setIsAlwaysShowFootView(boolean isAlwaysShowFootView) {
+		this.isAlwaysShowFootView = isAlwaysShowFootView;
 	}
 
 	/**
@@ -108,14 +107,14 @@ public abstract class BaseRVAdapter<T> extends RecyclerView.Adapter {
 
 	@Override
 	public int getItemCount() {
-		if ((isShowFootView || isLoadMore))
+		if ((isAlwaysShowFootView || isLoadMore))
 			return mListData == null ? 0 : mListData.size() + 1;
 		return mListData == null ? 0 : mListData.size() ;
 	}
 
 	@Override
 	public int getItemViewType(int position) {
-		if ((isShowFootView || isLoadMore) && position == getItemCount() - 1) {
+		if ((isAlwaysShowFootView || isLoadMore) && position == getItemCount() - 1) {
 			return FOOT_TYPE;
 		}
 		if (isMoreType) {
@@ -128,7 +127,7 @@ public abstract class BaseRVAdapter<T> extends RecyclerView.Adapter {
 	@Override
 	public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-		if ((isShowFootView || isLoadMore) && viewType == FOOT_TYPE) {
+		if ((isAlwaysShowFootView || isLoadMore) && viewType == FOOT_TYPE) {
 			View view = null;
 			if (footView != null) {
 				view = footView;
@@ -149,7 +148,7 @@ public abstract class BaseRVAdapter<T> extends RecyclerView.Adapter {
 	public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
 
 		//当是最底部加载更多的view时
-		if ((isShowFootView || isLoadMore) && position == getItemCount() - 1) {
+		if ((isAlwaysShowFootView || isLoadMore) && position == getItemCount() - 1) {
 			if (!isCustomFootView) {//使用默认的footview
 				FootHolder footHolder = (FootHolder) holder;
 				if (isLoadMore) {
